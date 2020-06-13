@@ -1,0 +1,4 @@
+conf/settings.json
+*.pyc
+venv/
+.idea/
