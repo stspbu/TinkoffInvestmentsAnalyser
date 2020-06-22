@@ -17,23 +17,25 @@ class InvestmentsManager:
 
         result = 0
         for k, v in currency_to_income.items():
-            if k != currency:
-                result += self._get_currency_change_cost(k, currency) * v
-        result += currency_to_income[currency]
+            result += self._get_currency_change_cost(k, Currency.RUB) * v
+
+        result = self._get_currency_change_cost(Currency.RUB, currency) * result
         return self._get_result(result, rounded=rounded)
 
     def _get_currency_change_cost(self, currency_from, currency_to):
         if currency_from == currency_to:
             return 1
 
+        # tcs has only RUB-{CURRENCY} pairs at the moment
         if currency_from == Currency.RUB:
-            figi = utils.get_figi_by_currency(currency_to)
+            figi = utils.get_currency_pair_figi(currency_to, currency_from)
             last_candle = self.api.get_candles(figi, Candle.Interval.WEEK)[0]
             change_cost = 1 / last_candle.close
         else:
-            figi = utils.get_figi_by_currency(currency_from)
+            figi = utils.get_currency_pair_figi(currency_from, currency_to)
             last_candle = self.api.get_candles(figi, Candle.Interval.WEEK)[0]
             change_cost = last_candle.close
+
         return change_cost
 
     def get_currency_to_profit(self, rounded=True):
