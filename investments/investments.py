@@ -26,7 +26,7 @@ class InvestmentsManager:
         if currency_from == currency_to:
             return 1
 
-        # tcs has only RUB-{CURRENCY} pairs at the moment
+        # tcs has only {CURRENCY}-RUB pairs at the moment
         if currency_from == Currency.RUB:
             figi = utils.get_currency_pair_figi(currency_to, currency_from)
             last_candle = self.api.get_candles(figi, Candle.Interval.WEEK)[0]
