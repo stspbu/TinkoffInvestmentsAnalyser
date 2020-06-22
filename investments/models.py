@@ -4,6 +4,7 @@ import datetime
 class Currency:
     RUB = 'RUB'
     USD = 'USD'
+    EUR = 'EUR'
 
 
 class Operation:
